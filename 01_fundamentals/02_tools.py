@@ -50,16 +50,16 @@ def main():
     print(f"\nTool: {add.name}")
     print(f"Description: {add.description}")
     print(f"Args: {add.args}")
-    print(f"Result: add(2, 3) = {add(2, 3)}")
+    print(f"Result: add(2, 3) = {add.invoke({'a': 2, 'b': 3})}")
     
     print(f"\nTool: {multiply.name}")
     print(f"Description: {multiply.description}")
-    print(f"Result: multiply(4, 5) = {multiply(4, 5)}")
+    print(f"Result: multiply(4, 5) = {multiply.invoke({'x': 4, 'y': 5})}")
     
     print(f"\nTool: {divide.name}")
     print(f"Description: {divide.description}")
-    print(f"Result: divide(10, 2) = {divide(10, 2)}")
-    print(f"Result: divide(10, 0) = {divide(10, 0)}")
+    print(f"Result: divide(10, 2) = {divide.invoke({'numerator': 10, 'denominator': 2})}")
+    print(f"Result: divide(10, 0) = {divide.invoke({'numerator': 10, 'denominator': 0})}")
     
     # Example 2: Tools with validation
     print("\n" + "─" * 70)
@@ -91,15 +91,15 @@ def main():
         return f"Executed: {query} LIMIT {limit}"
     
     print(f"\nValid query:")
-    result = search_database("SELECT * FROM users WHERE age > 18", limit=10)
+    result = search_database.invoke({"query": "SELECT * FROM users WHERE age > 18", "limit": 10})
     print(f"  {result}")
     
     print(f"\nInvalid query (UPDATE):")
-    result = search_database("UPDATE users SET age=18", limit=10)
+    result = search_database.invoke({"query": "UPDATE users SET age=18", "limit": 10})
     print(f"  {result}")
     
     print(f"\nInvalid limit:")
-    result = search_database("SELECT * FROM users", limit=200)
+    result = search_database.invoke({"query": "SELECT * FROM users", "limit": 200})
     print(f"  {result}")
     
     # Example 3: Tools as building blocks
@@ -155,13 +155,13 @@ def main():
             return f"Unexpected error: {str(e)[:100]}"
     
     print(f"\nValid endpoint:")
-    print(f"  {external_api_call('http://example.com/data')}")
+    print(f"  {external_api_call.invoke({'endpoint': 'http://example.com/data'})}")
     
     print(f"\nInvalid endpoint:")
-    print(f"  {external_api_call('/local/path')}")
+    print(f"  {external_api_call.invoke({'endpoint': '/local/path'})}")
     
     print(f"\nBlocked endpoint:")
-    print(f"  {external_api_call('http://example.com/dangerous')}")
+    print(f"  {external_api_call.invoke({'endpoint': 'http://example.com/dangerous'})}")
     
     # Summary
     print("\n" + "=" * 70)
